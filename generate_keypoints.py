@@ -62,7 +62,7 @@ def process_video(path, save_dir):
         min_detection_confidence=0.5, min_tracking_confidence=0.5
     )
     pose = mp.solutions.pose.Pose(
-        min_detection_confidence=0.5, min_tracking_confidence=0.5, upper_body_only=True
+        min_detection_confidence=0.5, min_tracking_confidence=0.5
     )
 
     pose_points_x, pose_points_y = [], []
