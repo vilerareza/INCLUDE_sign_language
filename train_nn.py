@@ -187,7 +187,8 @@ def fit(args):
         pin_memory=True,
     )
 
-    n_classes = 50
+    # RV: Adjust accordingly
+    n_classes = 1
     if args.dataset == "include":
         n_classes = 263
 

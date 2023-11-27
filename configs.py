@@ -5,7 +5,9 @@ import timm
 
 @dataclass
 class LstmConfig:
-    input_size: int = 134
+    # RV: Changed to 150 due to change in mediapipe keypoints
+    input_size: int = 150
+    # input_size: int = 134
     hidden_size: int = 256
     num_layers: int = 5
     batch_first: bool = True
@@ -29,7 +31,9 @@ class XgbConfig:
 @dataclass
 class TransformerConfig:
     size: str
-    input_size: int = 134
+    # RV: Changed to 150 due to change in mediapipe keypoints
+    input_size: int = 150
+    # input_size: int = 134
     max_position_embeddings: int = field(default=256, repr=False)
     layer_norm_eps: float = field(default=1e-12, repr=False)
     hidden_dropout_prob: float = field(default=0.1, repr=False)
