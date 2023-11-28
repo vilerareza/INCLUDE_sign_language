@@ -203,7 +203,7 @@ if __name__ == "__main__":
         help="location to output json file",
     )
     parser.add_argument(
-        "--dataset", default="include", type=str, help="options: include or include50"
+        "--dataset", default="include", type=str, help="options: include, include50, include_custom"
     )
     args = parser.parse_args()
 
