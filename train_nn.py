@@ -187,10 +187,12 @@ def fit(args):
         pin_memory=True,
     )
 
-    # RV: Adjust accordingly
-    n_classes = 1
+    n_classes = 50
     if args.dataset == "include":
         n_classes = 263
+    elif args.dataset == "include_custom":
+        # RV: Change accordingly
+        n_classes = 2
 
     if args.model == "lstm":
         config = LstmConfig()
@@ -244,9 +246,13 @@ def fit(args):
 
 def evaluate(args):
     label_map = load_label_map(args.dataset)
+    
     n_classes = 50
     if args.dataset == "include":
         n_classes = 263
+    elif args.dataset == "include_custom":
+        # RV: Change accordingly
+        n_classes = 2
 
     if args.use_cnn:
         dataset = FeaturesDatset(

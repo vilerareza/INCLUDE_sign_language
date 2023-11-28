@@ -145,7 +145,7 @@ dataloader = data.DataLoader(
     dataset,
     batch_size=1,
     shuffle=False,
-    num_workers=4,
+    num_workers=2,
     pin_memory=True,
 )
 label_map = dict(zip(label_map.values(), label_map.keys()))
