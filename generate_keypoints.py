@@ -18,6 +18,13 @@ def process_landmarks(landmarks):
         y_list.append(landmark.y)
     return x_list, y_list
 
+def process_pose_landmarks(landmarks):
+    x_list, y_list = [], []
+    for landmark in landmarks.landmark[0:25]:
+        x_list.append(landmark.x)
+        y_list.append(landmark.y)
+    return x_list, y_list
+
 
 def process_hand_keypoints(results):
     hand1_x, hand1_y, hand2_x, hand2_y = [], [], [], []
@@ -36,7 +43,7 @@ def process_hand_keypoints(results):
 
 def process_pose_keypoints(results):
     pose = results.pose_landmarks
-    pose_x, pose_y = process_landmarks(pose)
+    pose_x, pose_y = process_pose_landmarks(pose)
     return pose_x, pose_y
 
 
@@ -77,6 +84,7 @@ def process_video(path, save_dir):
     if not os.path.isfile(path):
         warnings.warn(path + " file not found")
     cap = cv2.VideoCapture(path)
+    print (f'video file: {path}')
     while cap.isOpened():
         ret, image = cap.read()
         if not ret:
@@ -109,8 +117,8 @@ def process_video(path, save_dir):
                 hand1_x, hand1_y, hand2_x, hand2_y = hand2_x, hand2_y, hand1_x, hand1_y
 
         ## Set to nan so that values can be interpolated in dataloader
-        pose_x = pose_x if pose_x else [np.nan] * 33
-        pose_y = pose_y if pose_y else [np.nan] * 33
+        pose_x = pose_x if pose_x else [np.nan] * 25
+        pose_y = pose_y if pose_y else [np.nan] * 25
 
         hand1_x = hand1_x if hand1_x else [np.nan] * 21
         hand1_y = hand1_y if hand1_y else [np.nan] * 21
@@ -129,8 +137,8 @@ def process_video(path, save_dir):
     cap.release()
 
     ## Set to nan so that values can be interpolated in dataloader
-    pose_points_x = pose_points_x if pose_points_x else [[np.nan] * 33]
-    pose_points_y = pose_points_y if pose_points_y else [[np.nan] * 33]
+    pose_points_x = pose_points_x if pose_points_x else [[np.nan] * 25]
+    pose_points_y = pose_points_y if pose_points_y else [[np.nan] * 25]
 
     hand1_points_x = hand1_points_x if hand1_points_x else [[np.nan] * 21]
     hand1_points_y = hand1_points_y if hand1_points_y else [[np.nan] * 21]
