@@ -93,50 +93,55 @@ def process_video(path, save_dir):
         ret, image = cap.read()
         if not ret:
             break
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        hand_results = hands.process(image)
-        pose_results = pose.process(image)
+        try:
+            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
-        hand1_x, hand1_y, hand2_x, hand2_y = process_hand_keypoints(hand_results)
-        pose_x, pose_y = process_pose_keypoints(pose_results)
+            hand_results = hands.process(image)
+            pose_results = pose.process(image)
 
-        ## Assign hands to correct positions
-        if len(hand1_x) > 0 and len(hand2_x) == 0:
-            if swap_hands(
-                left_wrist=(pose_x[15], pose_y[15]),
-                right_wrist=(pose_x[16], pose_y[16]),
-                hand=(hand1_x[0], hand1_y[0]),
-                input_hand="h1",
-            ):
-                hand1_x, hand1_y, hand2_x, hand2_y = hand2_x, hand2_y, hand1_x, hand1_y
+            hand1_x, hand1_y, hand2_x, hand2_y = process_hand_keypoints(hand_results)
+            pose_x, pose_y = process_pose_keypoints(pose_results)
 
-        elif len(hand1_x) == 0 and len(hand2_x) > 0:
-            if swap_hands(
-                left_wrist=(pose_x[15], pose_y[15]),
-                right_wrist=(pose_x[16], pose_y[16]),
-                hand=(hand2_x[0], hand2_y[0]),
-                input_hand="h2",
-            ):
-                hand1_x, hand1_y, hand2_x, hand2_y = hand2_x, hand2_y, hand1_x, hand1_y
+            ## Assign hands to correct positions
+            if len(hand1_x) > 0 and len(hand2_x) == 0:
+                if swap_hands(
+                    left_wrist=(pose_x[15], pose_y[15]),
+                    right_wrist=(pose_x[16], pose_y[16]),
+                    hand=(hand1_x[0], hand1_y[0]),
+                    input_hand="h1",
+                ):
+                    hand1_x, hand1_y, hand2_x, hand2_y = hand2_x, hand2_y, hand1_x, hand1_y
 
-        ## Set to nan so that values can be interpolated in dataloader
-        pose_x = pose_x if pose_x else [np.nan] * 25
-        pose_y = pose_y if pose_y else [np.nan] * 25
+            elif len(hand1_x) == 0 and len(hand2_x) > 0:
+                if swap_hands(
+                    left_wrist=(pose_x[15], pose_y[15]),
+                    right_wrist=(pose_x[16], pose_y[16]),
+                    hand=(hand2_x[0], hand2_y[0]),
+                    input_hand="h2",
+                ):
+                    hand1_x, hand1_y, hand2_x, hand2_y = hand2_x, hand2_y, hand1_x, hand1_y
 
-        hand1_x = hand1_x if hand1_x else [np.nan] * 21
-        hand1_y = hand1_y if hand1_y else [np.nan] * 21
-        hand2_x = hand2_x if hand2_x else [np.nan] * 21
-        hand2_y = hand2_y if hand2_y else [np.nan] * 21
+            ## Set to nan so that values can be interpolated in dataloader
+            pose_x = pose_x if pose_x else [np.nan] * 25
+            pose_y = pose_y if pose_y else [np.nan] * 25
 
-        pose_points_x.append(pose_x)
-        pose_points_y.append(pose_y)
-        hand1_points_x.append(hand1_x)
-        hand1_points_y.append(hand1_y)
-        hand2_points_x.append(hand2_x)
-        hand2_points_y.append(hand2_y)
+            hand1_x = hand1_x if hand1_x else [np.nan] * 21
+            hand1_y = hand1_y if hand1_y else [np.nan] * 21
+            hand2_x = hand2_x if hand2_x else [np.nan] * 21
+            hand2_y = hand2_y if hand2_y else [np.nan] * 21
 
-        n_frames += 1
+            pose_points_x.append(pose_x)
+            pose_points_y.append(pose_y)
+            hand1_points_x.append(hand1_x)
+            hand1_points_y.append(hand1_y)
+            hand2_points_x.append(hand2_x)
+            hand2_points_y.append(hand2_y)
+
+            n_frames += 1
+            
+        except:
+            continue
 
     cap.release()
 
