@@ -13,17 +13,21 @@ import warnings
 
 def process_landmarks(landmarks):
     x_list, y_list = [], []
-    for landmark in landmarks.landmark:
-        x_list.append(landmark.x)
-        y_list.append(landmark.y)
-    return x_list, y_list
+    try:
+        for landmark in landmarks.landmark:
+            x_list.append(landmark.x)
+            y_list.append(landmark.y)
+    finally:
+        return x_list, y_list
 
 def process_pose_landmarks(landmarks):
     x_list, y_list = [], []
-    for landmark in landmarks.landmark[0:25]:
-        x_list.append(landmark.x)
-        y_list.append(landmark.y)
-    return x_list, y_list
+    try:
+        for landmark in landmarks.landmark[0:25]:
+            x_list.append(landmark.x)
+            y_list.append(landmark.y)
+    finally:
+        return x_list, y_list
 
 
 def process_hand_keypoints(results):

@@ -192,7 +192,7 @@ def fit(args):
         n_classes = 263
     elif args.dataset == "include_custom":
         # RV: Change accordingly
-        n_classes = 2
+        n_classes = 44
 
     if args.model == "lstm":
         config = LstmConfig()
@@ -252,7 +252,7 @@ def evaluate(args):
         n_classes = 263
     elif args.dataset == "include_custom":
         # RV: Change accordingly
-        n_classes = 2
+        n_classes = 44
 
     if args.use_cnn:
         dataset = FeaturesDatset(
