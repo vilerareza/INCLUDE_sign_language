@@ -104,7 +104,7 @@ class KeypointsDataset(data.Dataset):
 
         pose = (
             np.array(list(map(np.array, df.pose.values)))
-            .reshape(-1, 66)
+            .reshape(-1, 50)
             .astype(np.float32)
         )
         h1 = (
